@@ -22,3 +22,14 @@
  컨테이너 중지: docker stop fastapi-container
  컨테이너 삭제: docker rm fastapi-container
  이미지 삭제: docker rmi my-fastapi-app
+ 실행중인 컨테이너: docker ps
+ 정지된채 이름 점유중인 컨테이너: docker ps -a
+
+  *빌드되면 이미지, 실행중인 이미지는 컨테이너 라함
+   컨테이너는 중지 후 껍데기는 삭제해야함.. 이를 간단히 한줄로..
+    >> docker rm -f {fastapi-container}
+  *이미지는 덮어씌워지지만, 컨테이너는 삭제해야 이름 충돌을 피할수 있다.(정지만해도 이름은 점유중)
+
+6. 개발단계 컨테이너 삭제후 재실행 한방
+  docker rm -f {컨테이너명} && docker run -d --name {컨테이너명} -p 80:8000 {이미지명}
+  (컨테이너명: fastapi-container, 이미지명: dimg-fastapi-app)
