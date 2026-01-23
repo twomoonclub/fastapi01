@@ -1,0 +1,24 @@
+1. Dockerfile 생성
+  현재 프로젝트의 루트에 Dockerfile 을 생성
+2. Docker build (마지막에 쩜 주의)
+  docker build -t dimg-fastapi-app .
+3. 컨테이너 실행
+  docker run -d --name fastapi-container -p 80:8000 dimg-fastapi-app
+  [설명]
+  -d: 백그라운드에서 실행 (터미널을 꺼도 계속 돌아감)
+  --name: 컨테이너의 이름을 지정
+  -p 80:8000: 핵심 설정! AWS 서버의 80번 포트(HTTP 기본)로 들어오는 요청을 도커 컨테이너 내부의 8000번 포트로 연결합니다.
+   (aws호스트포트:컨테이너포트 의 형태임 > -p 8000:8000 해야 브라우저에서 8000 포트로 접속 가능)
+4. 실행 상태 확인
+  docker ps
+  > STATUS 가 UP이면 실행중임
+5. 접속
+ 브라우저 주소창에 AWS 인스턴스의 퍼블릭 IP를 입력해 보세요.
+ 주소: http://<AWS-IP>/ (뒤에 :8000을 붙이지 않아도 됩니다. 80포트로 연결했으니까요!)
+ 문서 확인: http://<AWS-IP>/docs
+
+6. 운영 중에 자주 쓰게 될 명령어들입니다.
+ 로그 확인: docker logs -f fastapi-container (서버 에러가 날 때 확인용)
+ 컨테이너 중지: docker stop fastapi-container
+ 컨테이너 삭제: docker rm fastapi-container
+ 이미지 삭제: docker rmi my-fastapi-app
