@@ -41,11 +41,13 @@
   docker rm -f {컨테이너명} && docker run -d --name {컨테이너명} -p 80:8000 {이미지명}
   (컨테이너명: fastapi-container, 이미지명: dimg-fastapi-app)
 
-  ================ 모든 과정은  docker-compose.yml 설정으로 대체 및 취합 ====================
+
+  ################ 모든 과정은  docker-compose.yml 설정으로 대체 및 취합 ##################
   1. 각 프로젝트마다 Dockerfile 생성
-  2. postgresql 은.. 이미 생성된 이미지파일을 Docker Hub에서 받아 사용
+  2. PostgreSql 은.. 이미 생성된 이미지파일을 Docker Hub에서 받아 사용
   3. yml 파일이 빌드 및 실행 (강제 빌드 하도록 --build 로 빌드 옵션 반드시 설정, -d 백그라운드 실행 옵션도)
-    > docker-compose up --build -d
+    > docker compose up --build -d
+      (구버전은 docker-compose up  처럼 docker와 compose 사이에 - 있음)
   4. 실행 종료: 네트워크(포트) 및 컨테이너 제거 (DB데이터는 유지)
      > docker-compose down
      *잠시 멈추게만 하려면 (리소스등으로 인해 잠시만 멈추고싶은 경우)
@@ -55,10 +57,16 @@
  5. 특정 App (컨테이너) 만 재빌드 및 재실행 필요시
     # DB는 건드리지 않고, FastAPI(web) 코드 변경사항만 반영해서 다시 띄움
     # docker-compose.yml 파일안에 service 를 가령 db, web 등으로 분류했을 때 web 만 재빌드 및 재실행
-    >docker-compose up --build -d web
+    > docker compose up --build -d web
+     (구버전은 docker-compose up  처럼 docker와 compose 사이에 - 있음)
 
  6. 특정 app(service, container) 만 stop/start  필요시
    >docker-compose stop web   # web 서비스만 중지 (DB는 유지)
    >docker-compose start web  # web 서비스만 다시 시작
 
-
+ 7. docker-compose.yml 에 설정된 디비 정보
+   Host: AWS 서버의 공인 IP (예: 3.34.xxx.xxx)
+   Port: 5432 (AWS 콘솔 -> 보안 그룹 -> 인바운드 규칙 편집 >  특정IP 혹은 전체(0.0.0.0/0)에 대해 개방해줘야 외부접속 가능)
+   Database: fastapidb
+   Username: myuser (최초 설정된 관리자 계정이 됨)
+   Password: mypassword
